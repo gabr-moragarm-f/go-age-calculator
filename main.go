@@ -5,13 +5,12 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 )
 
 func main() {
-	fmt.Println("What year were you born?")
+	fmt.Println("When were you born? (yyyy-mm-dd)")
 	reader := bufio.NewReader(os.Stdin)
 
 	response, err := reader.ReadString('\n')
@@ -22,17 +21,15 @@ func main() {
 
 	response = strings.TrimSuffix(response, "\n")
 
-	year, err := strconv.Atoi(response)
+	birthDate, err := time.Parse("2006-01-02", response)
 
 	if err != nil {
-		fmt.Println(response, "is not a valid year")
+		fmt.Println(response, "is not a valid date(yyyy-mm-dd)")
 		log.Fatal(err)
 	}
 
-	currentYear := time.Time.Year(time.Now())
+	age := int(time.Since(birthDate).Hours() / 24 / 365.25)
 
-	age := currentYear - int(year)
-
-	fmt.Println("You shoud have", age, "years!")
+	fmt.Println("If I'm not wrong you have", age, "years!")
 
 }
